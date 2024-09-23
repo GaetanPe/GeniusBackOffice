@@ -11,30 +11,6 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class CustomDrawerState extends State<CustomDrawer> {
-  // Example values for dropdowns
-  String selectedOption1 = 'Option 1';
-  String selectedOption2 = 'Choice A';
-
-  // Fonction pour générer un DropdownButton réutilisable
-  Widget _buildDropdown(List<String> options, String selectedValue, ValueChanged<String?> onChanged) {
-    return DropdownButton<String>(
-      value: selectedValue,
-      onChanged: onChanged,
-      icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
-      dropdownColor: const Color.fromARGB(255, 22, 29, 72),
-      underline: Container(),
-      items: options.map((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(
-            value,
-            style: const TextStyle(color: Colors.white),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     double drawerWidth = widget.isCollapsed ? 80 : 250;
@@ -69,6 +45,9 @@ class CustomDrawerState extends State<CustomDrawer> {
                           'Home',
                           style: TextStyle(color: Colors.white),
                         ),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/');
+                  },
                 ),
                 ListTile(
                   leading: const Icon(Icons.settings, color: Colors.white),
@@ -88,34 +67,17 @@ class CustomDrawerState extends State<CustomDrawer> {
                           style: TextStyle(color: Colors.white),
                         ),
                 ),
-                if (!widget.isCollapsed)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        // Utilisation de la fonction _buildDropdown pour les deux dropdowns
-                        _buildDropdown(
-                          ['Option 1', 'Option 2', 'Option 3'],
-                          selectedOption1,
-                          (newValue) {
-                            setState(() {
-                              selectedOption1 = newValue ?? selectedOption1;
-                            });
-                          },
-                        ),
-                        const SizedBox(height: 10),
-                        _buildDropdown(
-                          ['Choice A', 'Choice B', 'Choice C'],
-                          selectedOption2,
-                          (newValue) {
-                            setState(() {
-                              selectedOption2 = newValue ?? selectedOption2;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
+                if (!widget.isCollapsed) ...[
+                  _buildExpansionTile(
+                    'Options',
+                    ['Option 1', 'Option 2', 'Option 3'],
                   ),
+                  const SizedBox(height: 10),
+                  _buildExpansionTile(
+                    'Choices',
+                    ['Choice A', 'Choice B', 'Choice C'],
+                  ),
+                ],
               ],
             ),
           ),
@@ -147,6 +109,23 @@ class CustomDrawerState extends State<CustomDrawer> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildExpansionTile(String title, List<String> options) {
+    return ExpansionTile(
+      title: Text(title, style: const TextStyle(color: Colors.white)),
+      children: options.map((String option) {
+        return ListTile(
+          title: Text(
+            option,
+            style: const TextStyle(color: Colors.white),
+          ),
+          onTap: () {
+            // Handle item selection if needed
+          },
+        );
+      }).toList(),
     );
   }
 }
