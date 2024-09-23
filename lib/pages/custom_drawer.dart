@@ -11,9 +11,33 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class CustomDrawerState extends State<CustomDrawer> {
+  // Example values for dropdowns
+  String selectedOption1 = 'Option 1';
+  String selectedOption2 = 'Choice A';
+
+  // Fonction pour générer un DropdownButton réutilisable
+  Widget _buildDropdown(List<String> options, String selectedValue, ValueChanged<String?> onChanged) {
+    return DropdownButton<String>(
+      value: selectedValue,
+      onChanged: onChanged,
+      icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
+      dropdownColor: const Color.fromARGB(255, 22, 29, 72),
+      underline: Container(),
+      items: options.map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(
+            value,
+            style: const TextStyle(color: Colors.white),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    double drawerWidth = widget.isCollapsed ? 80 : 250; 
+    double drawerWidth = widget.isCollapsed ? 80 : 250;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
@@ -34,13 +58,13 @@ class CustomDrawerState extends State<CustomDrawer> {
             ),
           ),
           Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ListTile(
                   leading: const Icon(Icons.home, color: Colors.white),
                   title: widget.isCollapsed
-                      ? null 
+                      ? null
                       : const Text(
                           'Home',
                           style: TextStyle(color: Colors.white),
@@ -64,11 +88,34 @@ class CustomDrawerState extends State<CustomDrawer> {
                           style: TextStyle(color: Colors.white),
                         ),
                 ),
-                ListTile(
-                  title: widget.isCollapsed
-                      ? null
-                      : _buildDropdowns(),
-                ),
+                if (!widget.isCollapsed)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        // Utilisation de la fonction _buildDropdown pour les deux dropdowns
+                        _buildDropdown(
+                          ['Option 1', 'Option 2', 'Option 3'],
+                          selectedOption1,
+                          (newValue) {
+                            setState(() {
+                              selectedOption1 = newValue ?? selectedOption1;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        _buildDropdown(
+                          ['Choice A', 'Choice B', 'Choice C'],
+                          selectedOption2,
+                          (newValue) {
+                            setState(() {
+                              selectedOption2 = newValue ?? selectedOption2;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
               ],
             ),
           ),
@@ -83,7 +130,6 @@ class CustomDrawerState extends State<CustomDrawer> {
                 const SizedBox(width: 10),
                 if (!widget.isCollapsed) ...[
                   const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Nom de l\'utilisateur',
@@ -101,47 +147,6 @@ class CustomDrawerState extends State<CustomDrawer> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildDropdowns() {
-    return Column(
-      children: [
-        DropdownButton<String>(
-          value: 'Option 1',
-          onChanged: (String? newValue) {},
-          icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
-          dropdownColor: const Color.fromARGB(255, 22, 29, 72),
-          underline: Container(),
-          items: <String>['Option 1', 'Option 2', 'Option 3']
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(
-                value,
-                style: const TextStyle(color: Colors.white),
-              ),
-            );
-          }).toList(),
-        ),
-        DropdownButton<String>(
-          value: 'Choice A',
-          onChanged: (String? newValue) {},
-          icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
-          dropdownColor: const Color.fromARGB(255, 22, 29, 72),
-          underline: Container(),
-          items: <String>['Choice A', 'Choice B', 'Choice C']
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(
-                value,
-                style: const TextStyle(color: Colors.white),
-              ),
-            );
-          }).toList(),
-        ),
-      ],
     );
   }
 }
