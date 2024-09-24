@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'customListTile.dart';
+import 'customExpensionTile.dart';
+import 'UserProfileWidget.dart';
 
 class CustomDrawer extends StatefulWidget {
   final bool isCollapsed;
@@ -21,111 +24,63 @@ class CustomDrawerState extends State<CustomDrawer> {
       color: const Color.fromARGB(255, 17, 25, 89),
       child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            alignment: Alignment.topLeft,
-            child: IconButton(
-              icon: Icon(
-                widget.isCollapsed ? Icons.menu : Icons.menu_open,
-                color: Colors.white,
-                size: 30,
-              ),
-              onPressed: widget.onToggleDrawer,
-            ),
-          ),
+          _buildMenuButton(),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: ListView(
+              padding: EdgeInsets.zero,
               children: [
-                ListTile(
-                  leading: const Icon(Icons.home, color: Colors.white),
-                  title: widget.isCollapsed
-                      ? null
-                      : const Text(
-                          'Home',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/');
-                  },
+                CustomListTile(
+                  icon: Icons.home,
+                  label: 'Home',
+                  isCollapsed: widget.isCollapsed,
+                  onTap: () => Navigator.pushNamed(context, '/'),
                 ),
-                ListTile(
-                  leading: const Icon(Icons.settings, color: Colors.white),
-                  title: widget.isCollapsed
-                      ? null
-                      : const Text(
-                          'Settings',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                CustomListTile(
+                  icon: Icons.settings,
+                  label: 'Settings',
+                  isCollapsed: widget.isCollapsed,
                 ),
-                ListTile(
-                  leading: const Icon(Icons.logout, color: Colors.white),
-                  title: widget.isCollapsed
-                      ? null
-                      : const Text(
-                          'Logout',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                CustomListTile(
+                  icon: Icons.logout,
+                  label: 'Logout',
+                  isCollapsed: widget.isCollapsed,
                 ),
-                if (!widget.isCollapsed) ...[
-                  _buildExpansionTile(
-                    'Options',
-                    ['Option 1', 'Option 2', 'Option 3'],
-                  ),
-                  const SizedBox(height: 10),
-                  _buildExpansionTile(
-                    'Choices',
-                    ['Choice A', 'Choice B', 'Choice C'],
-                  ),
-                ],
+                CustomExpansionTile(
+                  title: 'Options',
+                  options: ['Option 1', 'Option 2', 'Option 3'],
+                  isCollapsed: widget.isCollapsed,
+                ),
+                CustomExpansionTile(
+                  title: 'Choices',
+                  options: ['Choice A', 'Choice B', 'Choice C'],
+                  isCollapsed: widget.isCollapsed,
+                ),
               ],
             ),
           ),
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                const CircleAvatar(
-                  backgroundImage: AssetImage('assets/profile_pic.png'),
-                  radius: 20,
-                ),
-                const SizedBox(width: 10),
-                if (!widget.isCollapsed) ...[
-                  const Column(
-                    children: [
-                      Text(
-                        'Nom de l\'utilisateur',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Text(
-                        'email@exemple.com',
-                        style: TextStyle(color: Colors.white70),
-                      ),
-                    ],
-                  ),
-                ],
-              ],
-            ),
-          ),
+          UserProfileWidget(isCollapsed: widget.isCollapsed),
         ],
       ),
     );
   }
 
-  Widget _buildExpansionTile(String title, List<String> options) {
-    return ExpansionTile(
-      title: Text(title, style: const TextStyle(color: Colors.white)),
-      children: options.map((String option) {
-        return ListTile(
-          title: Text(
-            option,
-            style: const TextStyle(color: Colors.white),
+  // Widget pour le bouton du menu burger
+  Widget _buildMenuButton() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Row(
+        children: [
+          IconButton(
+            icon: const Icon(Icons.menu, color: Colors.white, size: 30),
+            onPressed: widget.onToggleDrawer,
           ),
-          onTap: () {
-            // Handle item selection if needed
-          },
-        );
-      }).toList(),
+          if (!widget.isCollapsed)
+            const Text(
+              'Menu',
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+        ],
+      ),
     );
   }
 }

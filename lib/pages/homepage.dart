@@ -76,17 +76,19 @@ class HomepageState extends State<Homepage> {
             right: 0,
             child: const PageHeader(),
           ),
-          if (!isLargeScreen)
+         if (!isLargeScreen)
             Positioned(
               top: 20,
               left: 10,
-              child: FloatingActionButton(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                child: const Icon(Icons.menu, color: Colors.black),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
+              child: Builder(
+                builder: (context) => FloatingActionButton(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  child: const Icon(Icons.menu, color: Colors.black),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                ),
               ),
             ),
         ],
