@@ -1,40 +1,40 @@
 import 'package:flutter/material.dart';
-
+import 'ItemListTile.dart';  
 
 class CustomExpansionTile extends StatelessWidget {
   final String title;
-  final List<String> options;
+  final List<ItemListTile> items;  
   final bool isCollapsed;
 
   const CustomExpansionTile({
     Key? key,
     required this.title,
-    required this.options,
+    required this.items,  // Liste flexible
     required this.isCollapsed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      leading: const Icon(Icons.arrow_right, color: Colors.white), // Icône principale pour l'ExpansionTile
-      title: isCollapsed 
-          ? const SizedBox.shrink()  // Cache le titre quand isCollapsed est true
+      leading: const Icon(Icons.arrow_right, color: Colors.white),
+      title: isCollapsed
+          ? const SizedBox.shrink()
           : Text(
               title,
               style: const TextStyle(color: Colors.white),
             ),
-      trailing: const SizedBox.shrink(), // Supprime la flèche à droite
-      children: options.map((String option) {
+      trailing: const SizedBox.shrink(),
+      children: items.map((ItemListTile item) {
         return ListTile(
-          leading: const Icon(Icons.access_alarm, color: Colors.white), // Icône pour chaque option interne
+          leading: Icon(item.icon, color: Colors.white),  // Icône personnalisée
           title: isCollapsed
-              ? const SizedBox.shrink()  // Cache le texte de chaque option si isCollapsed est true
+              ? const SizedBox.shrink()
               : Text(
-                  option,
+                  item.name,  // Nom personnalisé
                   style: const TextStyle(color: Colors.white),
                 ),
           onTap: () {
-            // Action pour chaque option
+            // Action personnalisée pour chaque item
           },
         );
       }).toList(),

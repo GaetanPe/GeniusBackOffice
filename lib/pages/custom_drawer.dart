@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'customListTile.dart';
 import 'customExpensionTile.dart';
 import 'UserProfileWidget.dart';
+import 'ItemListTile.dart';  // Importation de MenuItem
 
 class CustomDrawer extends StatefulWidget {
   final bool isCollapsed;
@@ -45,14 +46,23 @@ class CustomDrawerState extends State<CustomDrawer> {
                   label: 'Logout',
                   isCollapsed: widget.isCollapsed,
                 ),
+                // Utilisation d'une seule structure pour options et choices
                 CustomExpansionTile(
-                  title: 'Options',
-                  options: ['Option 1', 'Option 2', 'Option 3'],
+                  title: 'Options ',
+                  items: [
+                    ItemListTile(name: 'Profil', icon: Icons.person),
+                    ItemListTile(name: 'Paramètres', icon: Icons.settings),
+                    ItemListTile(name: 'Aide', icon: Icons.help),
+                  ],
                   isCollapsed: widget.isCollapsed,
                 ),
                 CustomExpansionTile(
-                  title: 'Choices',
-                  options: ['Choice A', 'Choice B', 'Choice C'],
+                  title: 'Choices ',
+                  items: [
+                    ItemListTile(name: 'Choix A', icon: Icons.check_circle),
+                    ItemListTile(name: 'Choix B', icon: Icons.radio_button_checked),
+                    ItemListTile(name: 'Choix C', icon: Icons.done),
+                  ],
                   isCollapsed: widget.isCollapsed,
                 ),
               ],
