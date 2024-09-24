@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'UserProfileDialog.dart';
+
 class UserProfileWidget extends StatelessWidget {
   final bool isCollapsed;
 
@@ -8,7 +9,7 @@ class UserProfileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _showProfileDialog(context),
+      onTap: () => _showProfileDialog(context),  // Plus de capture de position
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
@@ -37,7 +38,7 @@ class UserProfileWidget extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return const UserProfileDialog();
+        return const UserProfileDialog();  // Appel fixe au dialogue
       },
     );
   }
