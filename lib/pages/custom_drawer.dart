@@ -67,7 +67,7 @@ class CustomDrawerState extends State<CustomDrawer> {
   // Widget pour le bouton du menu burger
   Widget _buildMenuButton() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
       child: Row(
         children: [
           IconButton(
